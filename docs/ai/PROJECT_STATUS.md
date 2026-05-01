@@ -1,0 +1,65 @@
+# Project Status
+
+Last updated: 2026-05-01
+
+## Current Repository Shape
+
+Fretlab backend is currently a Node.js + Express + PostgreSQL API using CommonJS modules.
+
+Implemented top-level files and folders:
+
+- `server.js`: Express app bootstrap, route mounting, health endpoint, global 404 and error handlers.
+- `db/connection.js`: PostgreSQL `Pool` using `DATABASE_URL`, plus startup connection test logging.
+- `middleware/auth.js`: JWT bearer-token middleware.
+- `routes/auth.js`: Register and login endpoints.
+- `routes/chords.js`: Chord listing/detail routes with `chords` to `chord_positions` join.
+- `routes/user_favorites.js`: Authenticated user favorites routes.
+- `doc/CONTEXT.md`: Product and technical blueprint. Note: the requested path was `docs/CONTEXT.md`, but the repo currently has `doc/CONTEXT.md`.
+
+## Current Runtime Stack
+
+- Node.js
+- Express
+- PostgreSQL via `pg`
+- JWT via `jsonwebtoken`
+- Password hashing via `bcrypt`
+- Environment config via `dotenv`
+- CORS via `cors`
+
+## Implemented API Areas
+
+- Authentication:
+  - `POST /register`
+  - `POST /login`
+  - Also mounted under `/api/auth/*`
+- Chords:
+  - `GET /api/chords`
+  - `GET /api/chords/:id`
+  - `POST /api/chords`
+- Favorites:
+  - `GET /api/user-favorites`
+  - `POST /api/user-favorites`
+  - `DELETE /api/user-favorites/:chordId`
+- Health:
+  - `GET /health`
+
+## Known Gaps And Risks
+
+- Database schema is not represented by migrations in the repo.
+- `doc/CONTEXT.md` describes a future TypeScript/Zod/Prisma architecture, but the actual code is plain CommonJS JavaScript.
+- Auth SQL and database schema have already drifted during development; this should be stabilized with migrations before adding more features.
+- `routes/chords.js` still has a `POST /api/chords` implementation that appears based on an older chord schema (`name`, `root_note`, `quality`, `tuning`, `positions`, `created_by`) while the GET routes expect `root`, `suffix`, `difficulty_level` and `chord_positions`.
+- There are no automated tests yet.
+- `.env` exists locally and should not be treated as a portable or production-safe config source.
+
+## Recommended Next Coding Step
+
+Create a database migration/schema setup for the current tables before adding more route behavior. The highest-value next code task is to define and apply a single canonical PostgreSQL schema for:
+
+- `auth.users`
+- `public.profiles`
+- `public.chords`
+- `public.chord_positions`
+- `public.user_favorites`
+
+Then update `routes/chords.js` so all chord endpoints use the same schema model consistently.
