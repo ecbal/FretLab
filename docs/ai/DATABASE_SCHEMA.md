@@ -39,8 +39,18 @@ Known/expected columns:
 | `full_name` | `text` | Optional profile field. |
 | `avatar_url` | `text` | Optional profile field. |
 | `updated_at` | `timestamp with time zone` | Optional maintenance timestamp. |
+| `role` | `text` | Admin authorization role. Defaults to `user`. |
+| `status` | `text` | Account status. Defaults to `active`. |
 
 Register currently inserts only `id` and `username`.
+
+Role values currently expected by backend:
+
+- `user`
+- `admin`
+- `owner`
+
+Admin routes reject users whose `status` is not `active`.
 
 ## `public.chords`
 

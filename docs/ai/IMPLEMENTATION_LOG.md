@@ -37,3 +37,35 @@ Reviewed:
 ### Recommended Next Coding Step
 
 Add a migration or schema initialization layer before expanding functionality. Start by making the chord model consistent across database schema and `routes/chords.js`, because the current GET and POST chord endpoints appear to disagree about column names and storage shape.
+
+### Figma Mapping Added
+
+Reviewed the provided Figma file pages:
+
+- Dashboard canvas: `17:2`
+- Mobile canvas: `0:1`
+
+Added:
+
+- `docs/ai/FIGMA_SCREEN_MAP.md`
+- `docs/ai/ADMIN_DASHBOARD_PLAN.md`
+
+No application code was changed.
+
+### Admin Security Skeleton Implemented
+
+Implemented the first admin backend step:
+
+- Added `public.profiles.role`.
+- Added `public.profiles.status`.
+- Added `middleware/requireAdmin.js`.
+- Added `routes/admin.js`.
+- Mounted admin routes under `/api/admin`.
+- Added read-only `GET /api/admin/dashboard`.
+- Added read-only `GET /api/admin/users`.
+- Extended auth user responses with `role` and `status`.
+
+Notes:
+
+- `public.user_favorites` and `public.tunings` were not present in the database during inspection, so dashboard metrics treat missing optional tables as `0`.
+- A user must be promoted to `admin` or `owner` before using admin endpoints.

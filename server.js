@@ -5,6 +5,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const chordRoutes = require('./routes/chords');
 const userFavoriteRoutes = require('./routes/user_favorites');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +21,7 @@ app.use('/api/auth', authRoutes);
 app.use('/', authRoutes);
 app.use('/api/chords', chordRoutes);
 app.use('/api/user-favorites', userFavoriteRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found.' });

@@ -57,7 +57,9 @@ Success response:
   "user": {
     "id": "uuid",
     "email": "enes@can.com",
-    "username": "ecbal"
+    "username": "ecbal",
+    "role": "user",
+    "status": "active"
   }
 }
 ```
@@ -102,7 +104,9 @@ Success response:
   "user": {
     "id": "uuid",
     "email": "enes@can.com",
-    "username": "ecbal"
+    "username": "ecbal",
+    "role": "user",
+    "status": "active"
   }
 }
 ```
@@ -232,3 +236,64 @@ Common errors:
 - `401`: Missing token.
 - `403`: Invalid or expired token.
 - `404`: Favorite not found.
+
+## Admin
+
+All admin routes require:
+
+```text
+Authorization: Bearer <token>
+```
+
+The authenticated profile must have `status = active` and `role = admin` or `role = owner`.
+
+### `GET /api/admin/dashboard`
+
+Returns read-only dashboard metrics and recent records.
+
+Response shape:
+
+```json
+{
+  "metrics": {
+    "totalUsers": 1,
+    "totalChords": 0,
+    "totalTunings": 0,
+    "totalFavorites": 0
+  },
+  "recentUsers": [],
+  "recentChords": []
+}
+```
+
+### `GET /api/admin/users`
+
+Query params:
+
+- `search`: optional email/username search.
+- `limit`: optional page size, max `100`, default `25`.
+- `offset`: optional offset, default `0`.
+
+Response shape:
+
+```json
+{
+  "users": [
+    {
+      "id": "uuid",
+      "email": "enes@can.com",
+      "username": "ecbal",
+      "full_name": null,
+      "avatar_url": null,
+      "role": "owner",
+      "status": "active",
+      "updated_at": null,
+      "favorite_count": 0
+    }
+  ],
+  "pagination": {
+    "limit": 25,
+    "offset": 0
+  }
+}
+```

@@ -23,6 +23,8 @@ function toPublicUser(user) {
     id: user.id,
     email: user.email,
     username: user.username,
+    role: user.role,
+    status: user.status,
   };
 }
 
@@ -63,6 +65,8 @@ router.post('/register', async (req, res, next) => {
       user: toPublicUser({
         ...user,
         username,
+        role: 'user',
+        status: 'active',
       }),
     });
   } catch (err) {
@@ -102,7 +106,7 @@ router.post('/login', async (req, res, next) => {
     }
 
     const result = await db.query(
-      `SELECT u.id, u.email, p.username, u.password_hash
+      `SELECT u.id, u.email, p.username, p.role, p.status, u.password_hash
        FROM auth.users u
        LEFT JOIN public.profiles p ON p.id = u.id
        WHERE u.email = $1`,
