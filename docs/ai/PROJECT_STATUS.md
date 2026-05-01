@@ -102,7 +102,7 @@ Dashboard routing and API calls are now separated:
 - `src/shared/api.ts` builds API URLs through `URL` instead of string concatenation.
 - Local dashboard development now serves source files from `../fretlab-dashboard/src` directly instead of serving `dist`.
 - The dashboard dev server maps `.js` browser module requests to matching `.ts` source files and supports hot reload through server-sent events.
-- Backend exposes `GET /api/admin/pages/:feature` as a controlled fallback for dashboard page-content HTML.
+- Dashboard views are rendered as feature component modules; backend calls are only for JSON data.
 
 ## Known Gaps And Risks
 
@@ -112,7 +112,6 @@ Dashboard routing and API calls are now separated:
 - `routes/chords.js` still has a `POST /api/chords` implementation that appears based on an older chord schema (`name`, `root_note`, `quality`, `tuning`, `positions`, `created_by`) while the GET routes expect `root`, `suffix`, `difficulty_level` and `chord_positions`.
 - Admin route access requires a profile with `role` of `admin` or `owner`; existing users default to `user` until promoted.
 - Dashboard chord list depends on `GET /api/admin/chords`, so the logged-in user must be admin/owner and the backend must be running on the expected API origin.
-- `GET /api/admin/pages/:feature` reads from the sibling dashboard directory by default; set `DASHBOARD_DIR` if the dashboard project is moved.
 - There are no automated tests yet.
 - `.env` exists locally and should not be treated as a portable or production-safe config source.
 

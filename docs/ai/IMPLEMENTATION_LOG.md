@@ -219,7 +219,7 @@ Follow-up tasks:
 
 - If the browser still shows old requests, clear the old dashboard localStorage entry `fretlab.apiBaseUrl` or use the normalized API URL field value.
 
-### Dashboard Source Dev Server And Page Content API
+### Dashboard Source Dev Server And Component Views
 
 Date: 2026-05-01
 
@@ -231,9 +231,12 @@ Files changed:
 - `../fretlab-dashboard/README.md`
 - `../fretlab-dashboard/src/app.ts`
 - `../fretlab-dashboard/src/shared/feature-loader.ts`
+- `../fretlab-dashboard/src/features/dashboard/dashboard.ts`
+- `../fretlab-dashboard/src/features/login/login.ts`
+- `../fretlab-dashboard/src/features/users/users.ts`
+- `../fretlab-dashboard/src/features/chords/chords.ts`
+- `../fretlab-dashboard/src/features/chord-create/chord-create.ts`
 - `routes/admin.js`
-- `controllers/admin/adminPageController.js`
-- `services/admin/adminPageService.js`
 - `docs/ai/API_REFERENCE.md`
 - `docs/ai/PROJECT_STATUS.md`
 - `docs/ai/IMPLEMENTATION_LOG.md`
@@ -243,15 +246,16 @@ What was done:
 - Changed dashboard `npm start` to serve `src` directly instead of rebuilding and serving `dist`.
 - Added dashboard dev-server mapping from browser `.js` module requests to matching `.ts` source files.
 - Added server-sent-event hot reload for dashboard source changes.
-- Changed feature HTML/CSS loading from `/dist/features/...` to `/src/features/...`.
-- Added backend `GET /api/admin/pages/:feature` for controlled dashboard feature HTML responses.
-- Added feature-loader fallback to fetch page HTML from the backend endpoint when local source HTML is unavailable.
+- Moved feature page markup into the feature TypeScript modules so page views render as component functions.
+- Removed feature HTML fragment fetches from the dashboard runtime.
+- Removed the backend page-content endpoint so backend routes only serve JSON API data.
 
 Important decisions:
 
 - Kept `npm run build` and added `npm run preview` for explicit `dist` previews.
 - Kept normal local development source-first so Network no longer fills with `dist` requests during `npm start`.
 - Did not change the database schema.
+- Kept feature CSS as normal browser assets; frontend page content is no longer fetched as HTML.
 
 Follow-up tasks:
 

@@ -239,44 +239,13 @@ Common errors:
 
 ## Admin
 
-Most admin routes require:
+All admin routes require:
 
 ```text
 Authorization: Bearer <token>
 ```
 
 The authenticated profile must have `status = active` and `role = admin` or `role = owner`.
-
-### `GET /api/admin/pages/:feature`
-
-Returns controlled dashboard feature HTML as JSON. This endpoint is intended for local dashboard integration and fallback page-content loading.
-
-Auth requirement: none currently.
-
-Allowed `feature` values:
-
-```text
-login
-dashboard
-users
-chords
-chord-create
-```
-
-Response shape:
-
-```json
-{
-  "feature": "dashboard",
-  "html": "<section>...</section>",
-  "source": "dashboard-src"
-}
-```
-
-Common errors:
-
-- `404`: Unknown feature or missing dashboard page file.
-- `403`: Resolved dashboard page path is not allowed.
 
 ### `GET /api/admin/dashboard`
 
