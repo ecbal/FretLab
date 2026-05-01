@@ -297,3 +297,78 @@ Response shape:
   }
 }
 ```
+
+### `GET /api/admin/chords`
+
+Query params:
+
+- `search`: optional chord search across `full_name`, `root`, and `suffix`.
+- `root`: optional exact root filter.
+- `suffix`: optional exact suffix filter.
+- `difficultyLevel`: optional difficulty filter.
+- `limit`: optional page size, max `100`, default `50`.
+- `offset`: optional offset, default `0`.
+
+Response shape:
+
+```json
+{
+  "chords": [
+    {
+      "id": "uuid",
+      "root": "C",
+      "suffix": "maj",
+      "full_name": "C Major",
+      "difficulty_level": 1,
+      "positions": [
+        {
+          "id": "uuid",
+          "base_fret": 0,
+          "frets": [-1, 3, 2, 0, 1, 0],
+          "fingers": [0, 3, 2, 0, 1, 0],
+          "is_barre": false
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "limit": 50,
+    "offset": 0
+  }
+}
+```
+
+### `GET /api/admin/chords/:id`
+
+Returns one chord with positions.
+
+### `POST /api/admin/chords`
+
+Creates a chord and its positions in one transaction.
+
+Request body:
+
+```json
+{
+  "root": "C",
+  "suffix": "maj",
+  "fullName": "C Major",
+  "difficultyLevel": 1,
+  "positions": [
+    {
+      "baseFret": 0,
+      "frets": [-1, 3, 2, 0, 1, 0],
+      "fingers": [0, 3, 2, 0, 1, 0],
+      "isBarre": false
+    }
+  ]
+}
+```
+
+### `PATCH /api/admin/chords/:id`
+
+Updates chord fields. If `positions` is provided, existing positions are replaced in one transaction.
+
+### `DELETE /api/admin/chords/:id`
+
+Deletes chord positions, then deletes the chord.

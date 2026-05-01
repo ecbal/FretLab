@@ -58,6 +58,21 @@ Implemented top-level files and folders:
 - Admin:
   - `GET /api/admin/dashboard`
   - `GET /api/admin/users`
+  - `GET /api/admin/chords`
+  - `GET /api/admin/chords/:id`
+  - `POST /api/admin/chords`
+  - `PATCH /api/admin/chords/:id`
+  - `DELETE /api/admin/chords/:id`
+
+## Dashboard App
+
+A sibling static dashboard project now exists at:
+
+```text
+../fretlab-dashboard
+```
+
+It provides admin login, dashboard metrics, user list, chord list, and chord creation.
 
 ## Known Gaps And Risks
 
@@ -79,4 +94,4 @@ Create a database migration/schema setup for the current tables before adding mo
 - `public.chord_positions`
 - `public.user_favorites`
 
-Then update `routes/chords.js` so all chord endpoints use the same schema model consistently.
+Then update public `routes/chords.js` so all public chord endpoints use the same canonical schema behavior as the new admin chord CRUD.

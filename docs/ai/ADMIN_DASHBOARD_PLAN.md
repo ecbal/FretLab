@@ -150,7 +150,7 @@ Build this first:
 1. `role` column and `requireAdmin` middleware. Done.
 2. `GET /api/admin/dashboard`. Done.
 3. `GET /api/admin/users`. Done.
-4. Admin chord CRUD using the final chord schema.
+4. Admin chord CRUD using the final chord schema. Done.
 5. Admin tuning CRUD.
 
 Notifications can follow after the content-management path is stable.
