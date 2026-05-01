@@ -260,3 +260,39 @@ Important decisions:
 Follow-up tasks:
 
 - Consider adding a tiny browser overlay for hot reload connection errors if the dashboard dev server grows beyond this lightweight setup.
+
+### Dashboard AG Grid Lists And User Detail API
+
+Date: 2026-05-01
+
+Files changed:
+
+- `repositories/userRepository.js`
+- `services/admin/adminUserService.js`
+- `controllers/admin/adminUserController.js`
+- `routes/admin.js`
+- `../fretlab-dashboard/src/shared/endpoints.ts`
+- `../fretlab-dashboard/src/shared/grid.ts`
+- `../fretlab-dashboard/src/features/users/users.ts`
+- `../fretlab-dashboard/src/features/users/users.css`
+- `../fretlab-dashboard/src/features/chords/chords.ts`
+- `../fretlab-dashboard/src/features/chords/chords.css`
+- `docs/ai/API_REFERENCE.md`
+- `docs/ai/PROJECT_STATUS.md`
+- `docs/ai/IMPLEMENTATION_LOG.md`
+
+What was done:
+
+- Added `GET /api/admin/users/:id` to return user profile JSON plus favorite chord summaries when favorites exist.
+- Converted dashboard users list to AG Grid with row-click profile detail loading.
+- Converted dashboard chords list to AG Grid with row-click chord detail loading through the existing chord detail API.
+- Kept backend/frontend responsibility separated: backend returns JSON data only, frontend owns all page rendering.
+
+Important decisions:
+
+- AG Grid is loaded by the dashboard as a frontend library; backend routes do not serve grid or page assets.
+- User and chord detail panels fetch detail JSON only after a row is selected.
+
+Follow-up tasks:
+
+- Add edit/delete actions to selected chord rows once admin editing UX is ready.

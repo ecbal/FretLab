@@ -58,6 +58,7 @@ Implemented top-level files and folders:
 - Admin:
   - `GET /api/admin/dashboard`
   - `GET /api/admin/users`
+  - `GET /api/admin/users/:id`
   - `GET /api/admin/chords`
   - `GET /api/admin/chords/:id`
   - `POST /api/admin/chords`
@@ -103,6 +104,9 @@ Dashboard routing and API calls are now separated:
 - Local dashboard development now serves source files from `../fretlab-dashboard/src` directly instead of serving `dist`.
 - The dashboard dev server maps `.js` browser module requests to matching `.ts` source files and supports hot reload through server-sent events.
 - Dashboard views are rendered as feature component modules; backend calls are only for JSON data.
+- Dashboard user and chord lists render with AG Grid.
+- User rows can be selected to load profile detail from `GET /api/admin/users/:id`.
+- Chord rows can be selected to load chord detail from `GET /api/admin/chords/:id`.
 
 ## Known Gaps And Risks
 

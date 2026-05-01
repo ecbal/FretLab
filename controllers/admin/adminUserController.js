@@ -14,6 +14,16 @@ async function listUsers(req, res, next) {
   }
 }
 
+async function getUser(req, res, next) {
+  try {
+    const result = await adminUserService.getUser(req.params.id);
+    return res.json(result);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 module.exports = {
   listUsers,
+  getUser,
 };

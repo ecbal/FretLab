@@ -85,9 +85,65 @@ async function listUsers({ search, limit, offset, includeFavoriteCount }) {
   return result.rows;
 }
 
+async function findUserById(id, { includeFavoriteCount, includeFavorites }) {
+  const favoriteSelect = includeFavoriteCount
+    ? 'COUNT(uf.chord_id)::int AS favorite_count'
+    : '0::int AS favorite_count';
+  const favoriteJoin = includeFavoriteCount
+    ? 'LEFT JOIN public.user_favorites uf ON uf.user_id = u.id'
+    : '';
+
+  const result = await db.query(
+    `SELECT
+       u.id,
+       u.email,
+       u.created_at,
+       p.username,
+       p.full_name,
+       p.avatar_url,
+       p.role,
+       p.status,
+       p.updated_at,
+       ${favoriteSelect}
+     FROM auth.users u
+     LEFT JOIN public.profiles p ON p.id = u.id
+     ${favoriteJoin}
+     WHERE u.id = $1
+     GROUP BY u.id, u.email, u.created_at, p.username, p.full_name, p.avatar_url, p.role, p.status, p.updated_at`,
+    [id],
+  );
+
+  const user = result.rows[0];
+
+  if (!user || !includeFavorites) {
+    return user;
+  }
+
+  const favoritesResult = await db.query(
+    `SELECT
+       uf.chord_id,
+       uf.created_at,
+       c.root,
+       c.suffix,
+       c.full_name,
+       c.difficulty_level
+     FROM public.user_favorites uf
+     JOIN public.chords c ON c.id = uf.chord_id
+     WHERE uf.user_id = $1
+     ORDER BY uf.created_at DESC`,
+    [id],
+  );
+
+  return {
+    ...user,
+    favorites: favoritesResult.rows,
+  };
+}
+
 module.exports = {
   createUser,
   findByEmailWithProfile,
   listRecentUsers,
   listUsers,
+  findUserById,
 };

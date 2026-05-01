@@ -12,6 +12,7 @@ router.use(requireAdmin);
 
 router.get('/dashboard', adminDashboardController.getDashboard);
 router.get('/users', adminUserController.listUsers);
+router.get('/users/:id', adminUserController.getUser);
 router.get('/chords', adminChordController.listChords);
 router.get('/chords/:id', adminChordController.getChord);
 router.post('/chords', adminChordController.createChord);

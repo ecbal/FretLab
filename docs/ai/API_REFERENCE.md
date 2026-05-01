@@ -298,6 +298,36 @@ Response shape:
 }
 ```
 
+### `GET /api/admin/users/:id`
+
+Returns one user profile with favorite chord summary when `public.user_favorites` exists.
+
+Response shape:
+
+```json
+{
+  "user": {
+    "id": "uuid",
+    "email": "enes@can.com",
+    "created_at": "timestamp",
+    "username": "ecbal",
+    "full_name": null,
+    "avatar_url": null,
+    "role": "owner",
+    "status": "active",
+    "updated_at": null,
+    "favorite_count": 0,
+    "favorites": []
+  }
+}
+```
+
+Common errors:
+
+- `401`: Missing token.
+- `403`: Invalid token or non-admin profile.
+- `404`: User not found.
+
 ### `GET /api/admin/chords`
 
 Query params:
