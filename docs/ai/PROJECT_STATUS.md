@@ -74,6 +74,36 @@ A sibling static dashboard project now exists at:
 
 It provides admin login, dashboard metrics, user list, chord list, and chord creation.
 
+The dashboard frontend has been reorganized into a feature-based structure:
+
+- `src/app.ts`: Hash/path routing and auth-aware shell bootstrapping.
+- `src/shared/`: API client, state, feature loader, toast, and table helpers.
+- `src/features/login/`: Login screen assets.
+- `src/features/dashboard/`: Admin metrics screen assets.
+- `src/features/users/`: User list screen assets.
+- `src/features/chords/`: Chord list screen assets.
+- `src/features/chord-create/`: Chord creation screen assets.
+
+Dashboard routes currently supported:
+
+- `#/dashboard`
+- `#/chords`
+- `#/users`
+- `#/chord-create`
+- `#/login`
+
+The local dashboard server also falls back to `index.html` for direct paths such as `/chords`.
+
+Dashboard routing and API calls are now separated:
+
+- Frontend routes are handled through `src/app.ts`.
+- Backend URLs are defined in `src/shared/endpoints.ts`.
+- `src/shared/state.ts` normalizes the API base URL to an origin such as `http://localhost:3000`, even if an old value with `/api/admin` was stored in localStorage.
+- `src/shared/api.ts` builds API URLs through `URL` instead of string concatenation.
+- Local dashboard development now serves source files from `../fretlab-dashboard/src` directly instead of serving `dist`.
+- The dashboard dev server maps `.js` browser module requests to matching `.ts` source files and supports hot reload through server-sent events.
+- Backend exposes `GET /api/admin/pages/:feature` as a controlled fallback for dashboard page-content HTML.
+
 ## Known Gaps And Risks
 
 - Database schema is not represented by migrations in the repo.
@@ -81,6 +111,8 @@ It provides admin login, dashboard metrics, user list, chord list, and chord cre
 - Auth SQL and database schema have already drifted during development; this should be stabilized with migrations before adding more features.
 - `routes/chords.js` still has a `POST /api/chords` implementation that appears based on an older chord schema (`name`, `root_note`, `quality`, `tuning`, `positions`, `created_by`) while the GET routes expect `root`, `suffix`, `difficulty_level` and `chord_positions`.
 - Admin route access requires a profile with `role` of `admin` or `owner`; existing users default to `user` until promoted.
+- Dashboard chord list depends on `GET /api/admin/chords`, so the logged-in user must be admin/owner and the backend must be running on the expected API origin.
+- `GET /api/admin/pages/:feature` reads from the sibling dashboard directory by default; set `DASHBOARD_DIR` if the dashboard project is moved.
 - There are no automated tests yet.
 - `.env` exists locally and should not be treated as a portable or production-safe config source.
 

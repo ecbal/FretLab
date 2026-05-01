@@ -142,3 +142,117 @@ Verification:
 
 - `node --check` passed for the new backend CRUD files.
 - `node --check` passed for dashboard `app.js` and `server.js`.
+
+### Dashboard Routing And Feature Structure
+
+Date: 2026-05-01
+
+Files changed:
+
+- `../fretlab-dashboard/index.html`
+- `../fretlab-dashboard/server.js`
+- `../fretlab-dashboard/package.json`
+- `../fretlab-dashboard/build.js`
+- `../fretlab-dashboard/src/app.ts`
+- `../fretlab-dashboard/src/shared/api.ts`
+- `../fretlab-dashboard/src/shared/state.ts`
+- `../fretlab-dashboard/src/shared/feature-loader.ts`
+- `../fretlab-dashboard/src/shared/toast.ts`
+- `../fretlab-dashboard/src/shared/table.ts`
+- `../fretlab-dashboard/src/styles/tokens.css`
+- `../fretlab-dashboard/src/styles/shell.css`
+- `../fretlab-dashboard/src/features/*`
+- `docs/ai/PROJECT_STATUS.md`
+- `docs/ai/IMPLEMENTATION_LOG.md`
+
+What was done:
+
+- Reworked the dashboard into a feature-based frontend structure where each page has its own HTML, CSS, and TS file.
+- Added hash/path routing for dashboard, chords, users, chord creation, and login screens.
+- Updated the static server to serve direct dashboard paths through the app shell.
+- Made chord list API failures visible in the table area instead of leaving the page blank.
+
+Important decisions:
+
+- Kept the dashboard as a lightweight static app for now instead of introducing a framework before the MVP admin workflow is stable.
+- Used hash routes as the primary navigation path because they are simple and reliable for this static dashboard setup.
+
+Follow-up tasks:
+
+- Confirm the logged-in admin user has `public.profiles.role = 'admin'` or `owner`.
+- Add edit/delete chord UI actions on top of the existing admin chord CRUD API.
+
+### Dashboard Routing/API Separation Fix
+
+Date: 2026-05-01
+
+Files changed:
+
+- `../fretlab-dashboard/index.html`
+- `../fretlab-dashboard/server.js`
+- `../fretlab-dashboard/src/shared/api.ts`
+- `../fretlab-dashboard/src/shared/state.ts`
+- `../fretlab-dashboard/src/shared/endpoints.ts`
+- `../fretlab-dashboard/src/features/login/login.ts`
+- `../fretlab-dashboard/src/features/dashboard/dashboard.ts`
+- `../fretlab-dashboard/src/features/users/users.ts`
+- `../fretlab-dashboard/src/features/chords/chords.ts`
+- `../fretlab-dashboard/src/features/chord-create/chord-create.ts`
+- `docs/ai/PROJECT_STATUS.md`
+- `docs/ai/IMPLEMENTATION_LOG.md`
+
+What was done:
+
+- Separated frontend route names from backend endpoint paths.
+- Added a central endpoint map for auth/admin API paths.
+- Normalized the saved API base URL to an origin so stale localStorage values such as `/api/admin` cannot corrupt endpoint paths.
+- Switched API URL construction to `new URL(...)`.
+- Added cache-busting query parameters to the dashboard shell assets.
+- Updated the static dashboard server to return no-store headers and avoid serving `index.html` for missing asset files.
+
+Verification:
+
+- `node --check` passed for dashboard app, API client, state, and server files.
+- `npm run build` completed successfully for `../fretlab-dashboard`.
+
+Follow-up tasks:
+
+- If the browser still shows old requests, clear the old dashboard localStorage entry `fretlab.apiBaseUrl` or use the normalized API URL field value.
+
+### Dashboard Source Dev Server And Page Content API
+
+Date: 2026-05-01
+
+Files changed:
+
+- `../fretlab-dashboard/package.json`
+- `../fretlab-dashboard/index.html`
+- `../fretlab-dashboard/server.js`
+- `../fretlab-dashboard/README.md`
+- `../fretlab-dashboard/src/app.ts`
+- `../fretlab-dashboard/src/shared/feature-loader.ts`
+- `routes/admin.js`
+- `controllers/admin/adminPageController.js`
+- `services/admin/adminPageService.js`
+- `docs/ai/API_REFERENCE.md`
+- `docs/ai/PROJECT_STATUS.md`
+- `docs/ai/IMPLEMENTATION_LOG.md`
+
+What was done:
+
+- Changed dashboard `npm start` to serve `src` directly instead of rebuilding and serving `dist`.
+- Added dashboard dev-server mapping from browser `.js` module requests to matching `.ts` source files.
+- Added server-sent-event hot reload for dashboard source changes.
+- Changed feature HTML/CSS loading from `/dist/features/...` to `/src/features/...`.
+- Added backend `GET /api/admin/pages/:feature` for controlled dashboard feature HTML responses.
+- Added feature-loader fallback to fetch page HTML from the backend endpoint when local source HTML is unavailable.
+
+Important decisions:
+
+- Kept `npm run build` and added `npm run preview` for explicit `dist` previews.
+- Kept normal local development source-first so Network no longer fills with `dist` requests during `npm start`.
+- Did not change the database schema.
+
+Follow-up tasks:
+
+- Consider adding a tiny browser overlay for hot reload connection errors if the dashboard dev server grows beyond this lightweight setup.
