@@ -17,6 +17,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/', authRoutes);
 app.use('/api/chords', chordRoutes);
 app.use('/api/user-favorites', userFavoriteRoutes);
 

@@ -52,7 +52,7 @@ router.post('/register', async (req, res, next) => {
     const user = userResult.rows[0];
 
     await client.query(
-      `INSERT INTO profiles (id, email, username)
+      `INSERT INTO public.profiles (id, email, username)
        VALUES ($1, $2, $3)`,
       [user.id, user.email, user.username],
     );
