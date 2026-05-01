@@ -147,10 +147,19 @@ Likely required before admin implementation:
 
 Build this first:
 
-1. `role` column and `requireAdmin` middleware.
-2. `GET /api/admin/dashboard`.
-3. `GET /api/admin/users`.
+1. `role` column and `requireAdmin` middleware. Done.
+2. `GET /api/admin/dashboard`. Done.
+3. `GET /api/admin/users`. Done.
 4. Admin chord CRUD using the final chord schema.
 5. Admin tuning CRUD.
 
 Notifications can follow after the content-management path is stable.
+
+## Backend Structure Decision
+
+New admin work should use the established lightweight MVC structure:
+
+- `routes/`: URL bindings and middleware.
+- `controllers/`: Express request/response handling.
+- `services/`: business logic and transactions.
+- `repositories/`: SQL queries.

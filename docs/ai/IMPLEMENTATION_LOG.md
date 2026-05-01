@@ -69,3 +69,34 @@ Notes:
 
 - `public.user_favorites` and `public.tunings` were not present in the database during inspection, so dashboard metrics treat missing optional tables as `0`.
 - A user must be promoted to `admin` or `owner` before using admin endpoints.
+
+### MVC Refactor Started
+
+Refactored auth and admin dashboard/user flows into a lightweight MVC-style backend structure.
+
+Added:
+
+- `controllers/authController.js`
+- `controllers/admin/adminDashboardController.js`
+- `controllers/admin/adminUserController.js`
+- `services/authService.js`
+- `services/admin/adminDashboardService.js`
+- `services/admin/adminUserService.js`
+- `repositories/userRepository.js`
+- `repositories/profileRepository.js`
+- `repositories/adminRepository.js`
+- `utils/httpError.js`
+
+Updated:
+
+- `routes/auth.js` now only binds auth endpoints to controller methods.
+- `routes/admin.js` now only applies auth/admin middleware and binds admin endpoints.
+- `server.js` global error handler now respects `err.statusCode`.
+
+Verification:
+
+- `node --check` passed for all new and modified JavaScript files.
+
+Next recommended implementation:
+
+- Build admin chord CRUD in the new structure, starting with `adminChordController`, `adminChordService`, and `chordRepository`.

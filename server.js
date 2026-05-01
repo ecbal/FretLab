@@ -29,7 +29,10 @@ app.use((req, res) => {
 
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).json({ message: 'Internal server error.' });
+  const statusCode = err.statusCode || 500;
+  const message = statusCode === 500 ? 'Internal server error.' : err.message;
+
+  res.status(statusCode).json({ message });
 });
 
 app.listen(PORT, () => {

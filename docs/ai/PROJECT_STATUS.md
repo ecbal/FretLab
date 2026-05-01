@@ -6,6 +6,13 @@ Last updated: 2026-05-01
 
 Fretlab backend is currently a Node.js + Express + PostgreSQL API using CommonJS modules.
 
+The project now follows a lightweight MVC-style structure for new work:
+
+- Routes define URL bindings and middleware only.
+- Controllers handle `req`/`res`.
+- Services hold business logic and transactions.
+- Repositories hold SQL queries.
+
 Implemented top-level files and folders:
 
 - `server.js`: Express app bootstrap, route mounting, health endpoint, global 404 and error handlers.
@@ -16,6 +23,10 @@ Implemented top-level files and folders:
 - `routes/admin.js`: Admin dashboard and user list endpoints.
 - `routes/chords.js`: Chord listing/detail routes with `chords` to `chord_positions` join.
 - `routes/user_favorites.js`: Authenticated user favorites routes.
+- `controllers/`: Request/response handlers for auth and admin.
+- `services/`: Business logic for auth and admin.
+- `repositories/`: SQL access helpers for users, profiles, and admin metrics.
+- `utils/httpError.js`: Reusable HTTP error type.
 - `doc/CONTEXT.md`: Product and technical blueprint. Note: the requested path was `docs/CONTEXT.md`, but the repo currently has `doc/CONTEXT.md`.
 
 ## Current Runtime Stack
